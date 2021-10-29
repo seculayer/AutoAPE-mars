@@ -5,5 +5,5 @@ VERSION="1.0.0"
 REGISTRY_URL="registry.seculayer.com:31500"
 
 # docker build
-DOCKER_BUILDKIT=1 docker build -t $REGISTRY_URL/ape/automl-mars:$VERSION .
+DOCKER_BUILDKIT=0 docker build -t $REGISTRY_URL/ape/automl-mars:$VERSION .
 docker push $REGISTRY_URL/ape/automl-mars:$VERSION
