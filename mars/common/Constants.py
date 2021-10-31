@@ -18,6 +18,7 @@ class Constants(metaclass=Singleton):
 
     # Directories
     DIR_DATA_ROOT = _CONFIG.get("dir_data_root")
+    DIR_DIVISION_PATH = DIR_DATA_ROOT + _CONFIG.get("ape.features.dir", "/processing/ape/division")
 
     # Logs
     DIR_LOG = _CONFIG.get("dir_log", "./logs")
@@ -25,9 +26,11 @@ class Constants(metaclass=Singleton):
     LOG_NAME = _CONFIG.get("log_name", "MLAlgRecommender")
 
     # Hosts
-    MRMS_SVC = _CONFIG.get("mrms_svc")
-    MRMS_USER = _CONFIG.get("mrms_username")
-    MRMS_PASSWD = _CONFIG.get("mrms_password")
+    MRMS_SVC = _CONFIG.get("mrms_svc", "mrms-svc")
+    MRMS_USER = _CONFIG.get("mrms_username", "HE12RmzKHQtH3bL7tTRqCg==")
+    MRMS_PASSWD = _CONFIG.get("mrms_password", "jTf6XrqcYX1SAhv9JUPq+w==")
+    MRMS_SFTP_PORT = int(_CONFIG.get("mrms_sftp_port", "10022"))
+    MRMS_REST_PORT = int(_CONFIG.get("mrms_rest_port", "9200"))
 
 
 if __name__ == '__main__':

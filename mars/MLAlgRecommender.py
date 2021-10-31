@@ -15,6 +15,7 @@ class MLAlgRecommender(KubePodSafetyTermThread, metaclass=Singleton):
         self.logger.info("MLAlgRecommender Initialized!")
 
     def run(self) -> None:
+        self.mars_manager.recommend(0)
         while not self._is_exit():
             time.sleep(1)
 
@@ -22,4 +23,11 @@ class MLAlgRecommender(KubePodSafetyTermThread, metaclass=Singleton):
 
 
 if __name__ == '__main__':
-    mars = MLAlgRecommender()
+    import sys
+
+    j_id = sys.argv[1]
+    j_idx = sys.argv[2]
+
+    mars = MLAlgRecommender(j_id, j_idx)
+    mars.start()
+    mars.join()
