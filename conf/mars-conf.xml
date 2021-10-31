@@ -12,7 +12,7 @@
     <!-- log setting -->
     <property>
         <name>dir_log</name>
-        <value>/home/eyecloudai/automl/dev/automl-mars/logs</value>
+        <value>/eyeCloudAI/logs</value>
         <description>None</description>
     </property>
     <property>
