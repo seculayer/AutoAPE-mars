@@ -9,10 +9,11 @@
 #APP_PATH=/eyeCloudAI/app/ape
 #
 #MARS_LIB_PATH=$APP_PATH/mars/lib
+#MARS_PATH=$APP_PATH/mars
 #####
 #export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 #export CUDA_HOME=/usr/local/cuda
-#export PYTHONPATH=$MARS_LIB_PATH
+#export PYTHONPATH=$MARS_LIB_PATH:$MARS_PATH
 #
 #KEY=${1}
 #

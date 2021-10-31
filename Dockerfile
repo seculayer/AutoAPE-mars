@@ -28,7 +28,7 @@ COPY --from=builder "$app/dist/mars-1.0.0-py3-none-any.whl" \
         /eyeCloudAI/app/ape/mars/mars-1.0.0-py3-none-any.whl
 
 RUN pip3.7 install /eyeCloudAI/app/ape/mars/mars-1.0.0-py3-none-any.whl --no-dependencies  \
-    -t /eyeCloudAI/app/ape/mars/lib \
+    -t /eyeCloudAI/app/ape/mars \
     && rm /eyeCloudAI/app/ape/mars/mars-1.0.0-py3-none-any.whl
 
 RUN groupadd -g 1000 aiuser
