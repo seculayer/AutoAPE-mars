@@ -19,17 +19,22 @@ class RandomRecommender(object):
         self.algorithm_info = self.get_algorithm_info()
         print(self.algorithm_info)
 
+    # def get_algorithm_info(self):
+    #     self.http_client.request("GET", "/mrms/get_algorithm_info")
+    #     response = self.http_client.getresponse()
+    #     str_data = response.read()
+    #     print(str_data)
+    #     data = json.loads(str_data)
+    #     response.close()
+    #     result_dict = dict()
+    #     for algorithm in data:
+    #         result_dict[algorithm.get("alg_cls")] = algorithm.get("alg_id")
+    #     return result_dict
+
     def get_algorithm_info(self):
-        self.http_client.request("GET", "/mrms/get_algorithm_info")
-        response = self.http_client.getresponse()
-        str_data = response.read()
-        print(str_data)
-        data = json.loads(str_data)
-        response.close()
-        result_dict = dict()
-        for algorithm in data:
-            result_dict[algorithm.get("alg_cls")] = algorithm.get("alg_id")
-        return result_dict
+        return {
+            "KDNN": "20000000000000001", "KCNN": "20000000000000002"
+        }
 
     def recommend(self, dprs_list):
         result = list()
