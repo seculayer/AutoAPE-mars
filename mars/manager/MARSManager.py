@@ -24,28 +24,39 @@ class MARSManager(object):
             Constants.MRMS_SVC, Constants.MRMS_REST_PORT)
 
         self.job_id = job_id
+        self.current = 0
         self.logger.info("MARSManager initialized.")
 
-    def load_job_info(self, job_id, idx):
-        filename = "{}/DPRS_{}_{}.info".format(Constants.DIR_DIVISION_PATH, job_id, idx)
+    def load_job_info(self, filename):
         return self.mrms_sftp_manager.load_json_data(filename)
 
-    def recommend(self, idx):
-        job_info = self.load_job_info(self.job_id, idx)
-        results = list()
-        for dprs_data in job_info:
-            results += RandomRecommender().recommend(dprs_data)
+    def recommend(self):
+        filename = "{}/DPRS_{}_{}.info".format(Constants.DIR_DIVISION_PATH, self.job_id, self.current)
+        if self.mrms_sftp_manager.is_exist(filename):
+            job_info = self.load_job_info(filename)
+            results = list()
+            for dprs_data in job_info:
+                results += RandomRecommender().recommend(dprs_data)
 
-        self.http_client.request("POST", "/mrms/insert_alg_anls_info", body=json.dumps(results))
+            self.http_client.request("POST", "/mrms/insert_alg_anls_info", body=json.dumps(results))
+            response = self.http_client.getresponse()
+            self.logger.info("{} {} {}".format(response.status, response.reason, response.read()))
+
+            f = self.mrms_sftp_manager.get_client().open(
+                "{}/MARS_{}_{}.info".format(Constants.DIR_DIVISION_PATH, self.job_id, self.current),
+                "w"
+            )
+            f.write(json.dumps(results, indent=2))
+            f.close()
+            self.current += 1
+
+    def get_terminate(self) -> bool:
+        self.http_client.request("GET", "/mrms/get_proj_sttus_cd?project_id={}".format(self.job_id))
         response = self.http_client.getresponse()
-        self.logger.info("{} {} {}".format(response.status, response.reason, response.read()))
-
-        f = self.mrms_sftp_manager.get_client().open(
-            "{}/MARS_{}_{}.info".format(Constants.DIR_DIVISION_PATH, self.job_id, idx),
-            "w"
-        )
-        f.write(json.dumps(results, indent=2))
-        f.close()
+        status = response.read().decode("utf-8")
+        if status == Constants.STATUS_PROJECT_COMPLETE or status == Constants.STATUS_PROJECT_ERROR:
+            return True
+        return False
 
 
 if __name__ == '__main__':

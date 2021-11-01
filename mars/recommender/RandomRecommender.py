@@ -17,7 +17,6 @@ class RandomRecommender(object):
 
         self.ALGORITHM_POOL = ["KDNN", "KCNN"]
         self.algorithm_info = self.get_algorithm_info()
-        print(self.algorithm_info)
 
     # def get_algorithm_info(self):
     #     self.http_client.request("GET", "/mrms/get_algorithm_info")

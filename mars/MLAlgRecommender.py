@@ -15,8 +15,8 @@ class MLAlgRecommender(KubePodSafetyTermThread, metaclass=Singleton):
         self.logger.info("MLAlgRecommender Initialized!")
 
     def run(self) -> None:
-        self.mars_manager.recommend(0)
-        while not self._is_exit():
+        while not self.mars_manager.get_terminate():
+            self.mars_manager.recommend()
             time.sleep(1)
 
         self.logger.info("MLAlgRecommender terminate!")

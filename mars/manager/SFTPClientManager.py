@@ -39,6 +39,9 @@ class SFTPClientManager(object):
         f.close()
         return json_data
 
+    def is_exist(self, filename) -> bool:
+        return self.sftp_client.is_exist(filename)
+
 
 if __name__ == '__main__':
     SFTPClientManager(Constants.MRMS_SVC, Constants.MRMS_USER, Constants.MRMS_PASSWD)
