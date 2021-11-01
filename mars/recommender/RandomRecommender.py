@@ -31,20 +31,28 @@ class RandomRecommender(object):
     #         result_dict[algorithm.get("alg_cls")] = algorithm.get("alg_id")
     #     return result_dict
 
-    def get_algorithm_info(self):
+    @staticmethod
+    def get_algorithm_info():
         return {
             "KDNN": "20000000000000001", "KCNN": "20000000000000002"
         }
 
-    def recommend(self, dprs_list):
+    def get_uuid(self):
+        self.http_client.request("GET", "/mrms/get_uuid")
+        response = self.http_client.getresponse()
+        return response.read().decode("utf-8").replace("\n", "")
+
+    def recommend(self, dprs_dict):
         result = list()
 
-        for idx, dprs_data in enumerate(dprs_list):
+        for idx in range(random.randint(1, 1)):
             alg_cls = random.choice(self.ALGORITHM_POOL)
             alg_id = self.algorithm_info.get(alg_cls)
 
             result.append(
-                {"alg_cls": alg_cls, "alg_id": alg_id, "metadata_json": {}, "alg_json": {}, "alg_type": "1"}
+                {"alg_cls": alg_cls, "alg_id": alg_id,
+                 "alg_anal_id": self.get_uuid(), "dp_analysis_id": dprs_dict.get("dp_analysis_id"),
+                 "metadata_json": {}, "alg_json": {}, "alg_type": "1"}
             )
 
         return result
