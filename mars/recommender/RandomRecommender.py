@@ -41,7 +41,7 @@ class RandomRecommender(object):
         response = self.http_client.getresponse()
         return response.read().decode("utf-8").replace("\n", "")
 
-    def recommend(self, dprs_dict):
+    def recommend(self, dprs_dict, job_id):
         result = list()
 
         for idx in range(random.randint(1, 1)):
@@ -49,7 +49,7 @@ class RandomRecommender(object):
             alg_id = self.algorithm_info.get(alg_cls)
 
             result.append(
-                {"alg_cls": alg_cls, "alg_id": alg_id,
+                {"alg_cls": alg_cls, "alg_id": alg_id, "project_id": job_id,
                  "alg_anal_id": self.get_uuid(), "dp_analysis_id": dprs_dict.get("dp_analysis_id"),
                  "metadata_json": {}, "alg_json": {}, "alg_type": "1"}
             )

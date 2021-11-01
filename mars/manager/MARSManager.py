@@ -36,7 +36,7 @@ class MARSManager(object):
             job_info = self.load_job_info(filename)
             results = list()
             for dprs_data in job_info:
-                results += RandomRecommender().recommend(dprs_data)
+                results += RandomRecommender().recommend(dprs_data, self.job_id)
 
             self.http_client.request("POST", "/mrms/insert_alg_anls_info", body=json.dumps(results))
             response = self.http_client.getresponse()
