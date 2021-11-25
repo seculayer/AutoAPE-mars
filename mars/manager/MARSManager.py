@@ -38,7 +38,7 @@ class MARSManager(object):
                 results += RandomRecommender().recommend(dprs_data, self.job_id)
 
             response = rq.post(f"{self.rest_root_url}/mrms/insert_alg_anls_info", json=results)
-            self.logger.info(f"{response.status_code} {response.reason} {response.text}")
+            self.logger.info(f"insert alg anls info: {response.status_code} {response.reason} {response.text}")
 
             f = self.mrms_sftp_manager.get_client().open(
                 "{}/MARS_{}_{}.info".format(Constants.DIR_DIVISION_PATH, self.job_id, self.current),

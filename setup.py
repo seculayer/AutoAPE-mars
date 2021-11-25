@@ -50,3 +50,4 @@ class APEPythonSetup(object):
 
 if __name__ == '__main__':
     APEPythonSetup().setup()
+
