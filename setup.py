@@ -2,6 +2,11 @@
 # Author : Jin Kim
 # e-mail : jin.kim@seculayer.com
 # Powered by Seculayer © 2021 AI Service Model Team, R&D Center.
+
+# ----------------------------------------------------------------------------------------------
+# AutoML - MARS(Model and Architecture Recommend Server) Setup Script
+# ----------------------------------------------------------------------------------------------
+
 from typing import List
 
 from setuptools import setup, find_packages
@@ -31,7 +36,8 @@ class APEPythonSetup(object):
         setup(
             name=self.module_nm,
             version=self.version,
-            description="",
+            description="SecuLayer Inc. AutoML Project \n"
+                        "Module : MARS(Model and Architecture Recommend Server)",
             author="Jin Kim",
             author_email="jin.kim@seculayer.com",
             packages=self.get_packages(),
@@ -49,4 +55,10 @@ class APEPythonSetup(object):
 
 
 if __name__ == '__main__':
+    print("    __  ______    ____  _____")
+    print("   /  |/  /   |  / __ \/ ___/")
+    print("  / /|_/ / /| | / /_/ /\__ \ ")
+    print(" / /  / / ___ |/ _, _/___/ / ")
+    print("/_/  /_/_/  |_/_/ |_|/____/  ")
+    print("                             ")
     APEPythonSetup().setup()
