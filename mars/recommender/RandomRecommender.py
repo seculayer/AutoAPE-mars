@@ -2,18 +2,16 @@
 # Author : Jin Kim
 # e-mail : jin.kim@seculayer.com
 # Powered by Seculayer © 2021 AI Service Model Team, R&D Center.
-import http.client
-import json
+
+import requests as rq
 import random
-from typing import List
 
 from mars.common.Constants import Constants
 
 
 class RandomRecommender(object):
     def __init__(self):
-        self.http_client: http.client.HTTPConnection = http.client.HTTPConnection(
-            Constants.MRMS_SVC, Constants.MRMS_REST_PORT)
+        self.rest_root_url = f"http://{Constants.MRMS_SVC}:{Constants.MRMS_REST_PORT}"
 
         self.ALGORITHM_POOL = ["KDNN", "KCNN"]
         self.algorithm_info = self.get_algorithm_info()
@@ -37,11 +35,10 @@ class RandomRecommender(object):
         }
 
     def get_uuid(self):
-        self.http_client.request("GET", "/mrms/get_uuid")
-        response = self.http_client.getresponse()
-        return response.read().decode("utf-8").replace("\n", "")
+        response = rq.get(f"{self.rest_root_url}/mrms/get_uuid")
+        return response.text.replace("\n", "")
 
-    def recommend(self, dprs_dict):
+    def recommend(self, dprs_dict, job_id):
         result = list()
 
         for idx in range(random.randint(1, 1)):
@@ -49,7 +46,7 @@ class RandomRecommender(object):
             alg_id = self.algorithm_info.get(alg_cls)
 
             result.append(
-                {"alg_cls": alg_cls, "alg_id": alg_id,
+                {"alg_cls": alg_cls, "alg_id": alg_id, "project_id": job_id,
                  "alg_anal_id": self.get_uuid(), "dp_analysis_id": dprs_dict.get("dp_analysis_id"),
                  "metadata_json": {}, "alg_json": {}, "alg_type": "1"}
             )

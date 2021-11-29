@@ -28,15 +28,15 @@
     <!-- hosts -->
     <property>
         <name>mrms_svc</name>
-        <value>10.1.35.118</value>
+        <value>mrms-svc</value>
     </property>
     <property>
         <name>mrms_sftp_port</name>
-        <value>30022</value>
+        <value>10022</value>
     </property>
     <property>
         <name>mrms_rest_port</name>
-        <value>31920</value>
+        <value>9200</value>
     </property>
     <property>
         <name>mrms_username</name>
