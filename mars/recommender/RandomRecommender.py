@@ -41,7 +41,7 @@ class RandomRecommender(object):
     def recommend(self, dprs_dict, job_id):
         result = list()
 
-        for idx in range(random.randint(1, 1)):
+        for idx in range(random.randint(Constants.RCMD_MIN_COUNT, Constants.RCMD_MAX_COUNT)):
             alg_cls = random.choice(self.ALGORITHM_POOL)
             alg_id = self.algorithm_info.get(alg_cls)
 
