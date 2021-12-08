@@ -2,6 +2,7 @@ import time
 from mars.common.Singleton import Singleton
 from mars.common.thread.KubePodSafetyTermThread import KubePodSafetyTermThread
 from mars.common.Common import Common
+from mars.common.Constants import Constants
 from mars.manager.MARSManager import MARSManager
 
 
@@ -11,15 +12,25 @@ class MLAlgRecommender(KubePodSafetyTermThread, metaclass=Singleton):
         self.logger = Common.LOGGER.get_logger()
 
         self.mars_manager = MARSManager(job_id, job_idx)
-
-        self.logger.info("MLAlgRecommender Initialized!")
+        try:
+            self.mars_manager.initialize()
+            self.logger.info("MLAlgRecommender Initialized!")
+        except Exception as e:
+            self.logger.error(e, exc_info=True)
 
     def run(self) -> None:
+
         while not self.mars_manager.get_terminate():
-            self.mars_manager.recommend()
-            time.sleep(10)
+            try:
+                self.mars_manager.recommend()
+            except Exception as e:
+                self.logger.error(e, exc_info=True)
+                self.mars_manager.update_project_status(Constants.STATUS_PROJECT_ERROR)
+            finally:
+                time.sleep(10)
 
         self.logger.info("MLAlgRecommender terminate!")
+        self.mars_manager.terminate()
 
 
 if __name__ == '__main__':
