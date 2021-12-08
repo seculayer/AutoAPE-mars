@@ -13,10 +13,11 @@ class RandomRecommender(object):
     def __init__(self):
         self.rest_root_url = f"http://{Constants.MRMS_SVC}:{Constants.MRMS_REST_PORT}"
 
-        self.ALGORITHM_POOL = ["KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
-                               "SKLBernoulliNB", "SKLGaussianNB", "SKLKNeighbors",
-                               "SKLMLP", "SKLLinearSVC", "SKLNuSVC", "SKLSVC",
-                               "SKLDecisionTree"]
+        self.ALGORITHM_POOL = [
+            "KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest", "SKLBernoulliNB",
+            "SKLGaussianNB", "SKLKNeighbors", "SKLMLP", "SKLLinearSVC", "SKLSVC",
+            "SKLDecisionTree"
+                               ]
         self.algorithm_info = self.get_algorithm_info()
 
     # def get_algorithm_info(self):
@@ -38,8 +39,8 @@ class RandomRecommender(object):
             "SKLExtraTrees": "50000000000000001", "SKLRandomForest": "50000000000000002",
             "SKLBernoulliNB": "50000000000000003", "SKLGaussianNB": "50000000000000004",
             "SKLKNeighbors": "50000000000000005", "SKLMLP": "50000000000000006",
-            "SKLLinearSVC": "50000000000000007", "SKLNuSVC": "50000000000000008",
-            "SKLSVC": "50000000000000009", "SKLDecisionTree": "50000000000000010"
+            "SKLLinearSVC": "50000000000000007", "SKLSVC": "50000000000000009",
+            "SKLDecisionTree": "50000000000000010"
         }
 
     def get_uuid(self):
