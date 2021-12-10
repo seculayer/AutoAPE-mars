@@ -33,7 +33,7 @@ class MARSManager(object):
         return self.mrms_sftp_manager.load_json_data(filename)
 
     def recommend(self):
-        filename = "{}/DPRS_{}_{}.info".format(Constants.DIR_DIVISION_PATH, self.job_id, self.current)
+        filename = f"{Constants.DIR_JOB_PATH}/{self.job_id}/DPRS_{self.job_id}_{self.current}.info"
         if self.mrms_sftp_manager.is_exist(filename):
             job_info = self.load_job_info(filename)
             results = list()
@@ -44,7 +44,7 @@ class MARSManager(object):
             self.logger.info(f"insert alg anls info: {response.status_code} {response.reason} {response.text}")
 
             f = self.mrms_sftp_manager.get_client().open(
-                "{}/MARS_{}_{}.info".format(Constants.DIR_DIVISION_PATH, self.job_id, self.current),
+                f"{Constants.DIR_JOB_PATH}/{self.job_id}/MARS_{self.job_id}_{self.current}.info",
                 "w"
             )
             f.write(json.dumps(results, indent=2))

@@ -17,8 +17,9 @@ class Constants(metaclass=Singleton):
     _CONFIG = ConfUtils.load(filename=os.getcwd() + "/conf/mars-conf.xml")
 
     # Directories
-    DIR_DATA_ROOT = _CONFIG.get("dir_data_root")
-    DIR_DIVISION_PATH = DIR_DATA_ROOT + _CONFIG.get("ape.features.dir", "/processing/ape/division")
+    DIR_DATA_ROOT = _CONFIG.get("dir_data_root", "/eyeCloudAI/data")
+    DIR_DIVISION_PATH = DIR_DATA_ROOT + "/processing/ape/division"
+    DIR_JOB_PATH = DIR_DATA_ROOT + "/processing/ape/jobs"
 
     # Logs
     DIR_LOG = _CONFIG.get("dir_log", "./logs")
