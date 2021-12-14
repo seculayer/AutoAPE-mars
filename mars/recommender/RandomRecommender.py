@@ -13,10 +13,13 @@ class RandomRecommender(object):
     def __init__(self):
         self.rest_root_url = f"http://{Constants.MRMS_SVC}:{Constants.MRMS_REST_PORT}"
 
+        # idx(dataset_format) 0: None(empty), 1: text, 2: image
         self.ALGORITHM_POOL = [
-            "KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest", "SKLBernoulliNB",
-            "SKLGaussianNB", "SKLKNeighbors", "SKLMLP", "SKLLinearSVC", "SKLSVC",
-            "SKLDecisionTree"
+            [],
+            ["KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest", "SKLBernoulliNB",
+             "SKLGaussianNB", "SKLKNeighbors", "SKLMLP", "SKLLinearSVC", "SKLSVC",
+             "SKLDecisionTree"],
+            ["KCNN"]
                                ]
         self.algorithm_info = self.get_algorithm_info()
 
@@ -47,17 +50,18 @@ class RandomRecommender(object):
         response = rq.get(f"{self.rest_root_url}/mrms/get_uuid")
         return response.text.replace("\n", "")
 
-    def recommend(self, dprs_dict, job_id):
+    def recommend(self, dprs_dict, job_id, dataset_format):
         result = list()
-
+        alg_pool: list = self.ALGORITHM_POOL[int(dataset_format)]
         for idx in range(random.randint(Constants.RCMD_MIN_COUNT, Constants.RCMD_MAX_COUNT)):
-            alg_cls = random.choice(self.ALGORITHM_POOL)
+            alg_cls = random.choice(alg_pool)
             alg_id = self.algorithm_info.get(alg_cls)
 
             result.append(
                 {"alg_cls": alg_cls, "alg_id": alg_id, "project_id": job_id,
                  "alg_anal_id": self.get_uuid(), "dp_analysis_id": dprs_dict.get("dp_analysis_id"),
-                 "metadata_json": {}, "alg_json": {}, "alg_type": "1"}
+                 "metadata_json": {}, "alg_json": {}, "alg_type": "1",
+                 "dataset_format": dataset_format}
             )
 
         return result

@@ -38,7 +38,9 @@ class MARSManager(object):
             job_info = self.load_job_info(filename)
             results = list()
             for dprs_data in job_info:
-                results += RandomRecommender().recommend(dprs_data, self.job_id)
+                data_analysis_id: str = dprs_data.get("data_analysis_id")
+                dataset_format = self.get_dataset_format(data_analysis_id)
+                results += RandomRecommender().recommend(dprs_data, self.job_id, dataset_format)
 
             response = rq.post(f"{self.rest_root_url}/mrms/insert_alg_anls_info", json=results)
             self.logger.info(f"insert alg anls info: {response.status_code} {response.reason} {response.text}")
@@ -50,6 +52,12 @@ class MARSManager(object):
             f.write(json.dumps(results, indent=2))
             f.close()
             self.current += 1
+
+    def get_dataset_format(self, data_analysis_id) -> str:
+        response = rq.get(f"{self.rest_root_url}/mrms/get_dataset_format?data_analysis_id={data_analysis_id}")
+        format_type = response.text
+        self.logger.info(f"get data anlaysis id: {response.status_code} {response.reason} {response.text}")
+        return format_type
 
     def update_project_status(self, status):
         status_json = {"status": status, "project_id": self.job_id}
