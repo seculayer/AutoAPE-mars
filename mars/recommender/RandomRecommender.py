@@ -16,10 +16,11 @@ class RandomRecommender(object):
         # idx(dataset_format) 0: None(empty), 1: text, 2: image
         self.ALGORITHM_POOL = [
             [],
-            ["KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest", "SKLBernoulliNB",
-             "SKLGaussianNB", "SKLKNeighbors", "SKLMLP", "SKLLinearSVC", "SKLSVC",
-             "SKLDecisionTree"],
-            ["KCNN"]
+            ["KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
+             "SKLGaussianNB", "SKLLinearSVC", "SKLSVC", "SKLDecisionTree",
+             # "SKLKNeighbors", "SKLMLP", "SKLBernoulliNB"
+            ],
+            ["KCNN", "KDNN"]
                                ]
         self.algorithm_info = self.get_algorithm_info()
 
