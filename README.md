@@ -1,2 +1,2 @@
-# automl-mars
-Auto ML - MARS(ML Algorithm Recommend Server)
+# AutoAPE-mars
+AutoAPE(Advanced Perceptron Engine) - MARS(ML Algorithm Recommend Server)
