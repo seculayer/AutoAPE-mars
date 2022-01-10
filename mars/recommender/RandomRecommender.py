@@ -18,7 +18,7 @@ class RandomRecommender(object):
             [],
             ["KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
              "SKLGaussianNB", "SKLLinearSVC", "SKLSVC", "SKLDecisionTree",
-             # "SKLKNeighbors", "SKLMLP", "SKLBernoulliNB"
+             "SKLBernoulliNB"  # "SKLKNeighbors", "SKLMLP"
             ],
             ["KCNN", "KDNN"]
                                ]
