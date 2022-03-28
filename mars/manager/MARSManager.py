@@ -41,6 +41,7 @@ class MARSManager(object):
                 data_analysis_id: str = dprs_data.get("data_analysis_id")
                 dataset_format = self.get_dataset_format(data_analysis_id)
                 results += RandomRecommender().recommend(dprs_data, self.job_id, dataset_format)
+                self.logger.debug(f"project_id: {self.job_id}, recommended: {results[-1]}")
 
             response = rq.post(f"{self.rest_root_url}/mrms/insert_alg_anls_info", json=results)
             self.logger.info(f"insert alg anls info: {response.status_code} {response.reason} {response.text}")
