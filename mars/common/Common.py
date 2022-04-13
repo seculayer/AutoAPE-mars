@@ -4,9 +4,9 @@
 # Powered by Seculayer © 2021 Service Model Team, R&D Center.
 
 # ---- automl packages
-from mars.common.Singleton import Singleton
-from mars.common.logger.MPLogger import MPLogger
-from mars.common.utils.FileUtils import FileUtils
+from pycmmn.Singleton import Singleton
+from pycmmn.logger.MPLogger import MPLogger
+from pycmmn.utils.FileUtils import FileUtils
 from mars.common.Constants import Constants
 
 

@@ -5,6 +5,7 @@
 
 import requests as rq
 import json
+from typing import Union
 
 from mars.common.Common import Common
 from mars.common.Constants import Constants
@@ -15,9 +16,9 @@ from mars.recommender.RandomRecommender import RandomRecommender
 class MARSManager(object):
     # class : DataAnalyzerManager
     def __init__(self, job_id, job_idx):
-        self.logger = Common.LOGGER.get_logger()
+        self.logger = Common.LOGGER.getLogger()
 
-        self.mrms_sftp_manager: SFTPClientManager = None
+        self.mrms_sftp_manager: Union[SFTPClientManager, None] = None
 
         self.rest_root_url = f"http://{Constants.MRMS_SVC}:{Constants.MRMS_REST_PORT}"
 
