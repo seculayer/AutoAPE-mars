@@ -38,7 +38,7 @@ COPY --from=builder "$app/pycmmn/dist/pycmmn-1.0.0-py3-none-any.whl" \
 
 RUN pip3.7 install /eyeCloudAI/app/ape/pycmmn/pycmmn-1.0.0-py3-none-any.whl --no-dependencies  \
     -t /eyeCloudAI/app/ape/pycmmn/ \
-    && rm /eyeCloudAI/app/ape/pycmmn/pycmmn-1.0.0-py3-none-any.whl \
+    && rm /eyeCloudAI/app/ape/pycmmn/pycmmn-1.0.0-py3-none-any.whl
 
 # mars install
 RUN mkdir -p /eyeCloudAI/app/ape/mars
