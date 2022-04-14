@@ -9,7 +9,7 @@ from typing import Union
 
 from mars.common.Common import Common
 from mars.common.Constants import Constants
-from mars.manager.SFTPClientManager import SFTPClientManager
+from pycmmn.sftp.SFTPClientManager import SFTPClientManager
 from mars.recommender.RandomRecommender import RandomRecommender
 
 
@@ -28,7 +28,9 @@ class MARSManager(object):
 
     def initialize(self):
         self.mrms_sftp_manager = SFTPClientManager(
-            "{}:{}".format(Constants.MRMS_SVC, Constants.MRMS_SFTP_PORT), Constants.MRMS_USER, Constants.MRMS_PASSWD)
+            "{}:{}".format(Constants.MRMS_SVC, Constants.MRMS_SFTP_PORT),
+            Constants.MRMS_USER, Constants.MRMS_PASSWD, self.logger
+        )
 
     def load_job_info(self, filename):
         return self.mrms_sftp_manager.load_json_data(filename)
