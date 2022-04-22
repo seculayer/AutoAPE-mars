@@ -1,6 +1,6 @@
 import time
-from mars.common.Singleton import Singleton
-from mars.common.thread.KubePodSafetyTermThread import KubePodSafetyTermThread
+from pycmmn.Singleton import Singleton
+from pycmmn.KubePodSafetyTermThread import KubePodSafetyTermThread
 from mars.common.Common import Common
 from mars.common.Constants import Constants
 from mars.manager.MARSManager import MARSManager
@@ -9,7 +9,7 @@ from mars.manager.MARSManager import MARSManager
 class MLAlgRecommender(KubePodSafetyTermThread, metaclass=Singleton):
     def __init__(self, job_id: str, job_idx: str):
         KubePodSafetyTermThread.__init__(self)
-        self.logger = Common.LOGGER.get_logger()
+        self.logger = Common.LOGGER.getLogger()
 
         self.mars_manager = MARSManager(job_id, job_idx)
         try:
