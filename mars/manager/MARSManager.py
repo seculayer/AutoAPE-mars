@@ -43,7 +43,7 @@ class MARSManager(object):
             for dprs_data in job_info:
                 data_analysis_id: str = dprs_data.get("data_analysis_id")
                 dataset_format = self.get_dataset_format(data_analysis_id)
-                results += RandomRecommender().recommend(dprs_data, self.job_id, dataset_format)
+                results += RandomRecommender(project_purpose_cd=dprs_data.get("project_purpose_cd", None)).recommend(dprs_data, self.job_id, dataset_format)
                 self.logger.debug(f"project_id: {self.job_id}, recommended: {results[-1]}")
 
             response = rq.post(f"{self.rest_root_url}/mrms/insert_alg_anls_info", json=results)
@@ -59,7 +59,7 @@ class MARSManager(object):
 
     def get_dataset_format(self, data_analysis_id) -> str:
         response = rq.get(f"{self.rest_root_url}/mrms/get_dataset_format?data_analysis_id={data_analysis_id}")
-        format_type = response.text
+        format_type = response.text.replace("\n", "")
         self.logger.info(f"get data anlaysis id: {response.status_code} {response.reason} {response.text}")
         return format_type
 
