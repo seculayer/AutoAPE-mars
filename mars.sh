@@ -8,10 +8,15 @@
 
 APP_PATH=/eyeCloudAI/app/ape
 ####
-export PYTHONPATH=$PYTHONPATH:$APP_PATH/mars/lib:$APP_PATH/mars
-export PYTHONPATH=$PYTHONPATH:$APP_PATH/pycmmn/lib:$APP_PATH/pycmmn
+if [ -x "${APP_PATH}/mars/.venv/bin/python3" ]; then
+  PYTHON_BIN="${APP_PATH}/mars/.venv/bin/python3"
+else
+  PYTHON_BIN="$(command -v python3)"
+  export PYTHONPATH=$PYTHONPATH:$APP_PATH/mars/lib:$APP_PATH/mars
+  export PYTHONPATH=$PYTHONPATH:$APP_PATH/pycmmn/lib:$APP_PATH/pycmmn
+fi
 
 KEY=${1}
 WORKER_IDX=${2}
 
-/usr/local/bin/python3.7 -m mars.MLAlgRecommender ${KEY} ${WORKER_IDX}
+$PYTHON_BIN -m mars.MLAlgRecommender ${KEY} ${WORKER_IDX}
