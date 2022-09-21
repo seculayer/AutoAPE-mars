@@ -1,9 +1,7 @@
 [tool.poetry]
 name = "mars"
 version = "1.0.0"
-description = """SecuLayer Inc. AutoML Project
-Module : MARS(Model and Architecture Recommend Server)
-"""
+description = "AutoML: MARS(Model and Architecture Recommend Server)"
 authors = ["Jin Kim <jin.kim@seculayer.com>"]
 include = ["conf"]
 
