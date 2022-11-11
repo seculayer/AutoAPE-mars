@@ -37,13 +37,16 @@ class MARSManager(object):
 
     def recommend(self):
         filename = f"{Constants.DIR_JOB_PATH}/{self.job_id}/DPRS_{self.job_id}_{self.current}.info"
+        project_tag_list = json.loads(str(rq.get(f"{self.rest_root_url}/mrms/get_project_tag?project_id={self.job_id}")))
         if self.mrms_sftp_manager.is_exist(filename):
             job_info = self.load_job_info(filename)
             results = list()
             for dprs_data in job_info:
                 data_analysis_id: str = dprs_data.get("data_analysis_id")
                 dataset_format = self.get_dataset_format(data_analysis_id)
-                results += RandomRecommender(project_purpose_cd=dprs_data.get("project_purpose_cd", None)).recommend(dprs_data, self.job_id, dataset_format)
+                results += RandomRecommender(
+                    project_purpose_cd=dprs_data.get("project_purpose_cd", None), project_tag_list=project_tag_list
+                ).recommend(dprs_data, self.job_id, dataset_format)
                 self.logger.debug(f"project_id: {self.job_id}, recommended: {results[-1]}")
 
             response = rq.post(f"{self.rest_root_url}/mrms/insert_alg_anls_info", json=results)
