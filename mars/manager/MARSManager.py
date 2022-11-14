@@ -37,7 +37,7 @@ class MARSManager(object):
 
     def recommend(self):
         filename = f"{Constants.DIR_JOB_PATH}/{self.job_id}/DPRS_{self.job_id}_{self.current}.info"
-        project_tag_list = json.loads(str(rq.get(f"{self.rest_root_url}/mrms/get_project_tag?project_id={self.job_id}")))
+        project_tag_list = rq.get(f"{self.rest_root_url}/mrms/get_project_tag?project_id={self.job_id}").text.split(",")
         if self.mrms_sftp_manager.is_exist(filename):
             job_info = self.load_job_info(filename)
             results = list()
