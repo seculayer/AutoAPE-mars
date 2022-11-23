@@ -7,6 +7,7 @@ import requests as rq
 import random
 
 from mars.common.Constants import Constants
+from mars.common.Common import Common
 
 
 class RandomRecommender(object):
@@ -22,7 +23,8 @@ class RandomRecommender(object):
             {
                 "1": [
                     "KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
-                    "SKLGaussianNB", "SKLSVC", "SKLDecisionTree"
+                    "SKLGaussianNB", "SKLDecisionTree",  # "SKLSVC",
+                    "XGBoost", "IsolationForest", "LightGBM"
                     # "SKLBernoulliNB", "SKLLinearSVC", "SKLKNeighbors", "SKLMLP"
                 ],
                 "10": [
@@ -36,7 +38,7 @@ class RandomRecommender(object):
         self.SPECIFIC_ALGORITHM_POOL = {
             "dga": "XGBoost",
             "packet": "IsolationForest",
-            "metadata": "LightGBM"
+            "meta": "LightGBM"
         }
         self.algorithm_info = self.get_algorithm_info()
 
@@ -67,8 +69,8 @@ class RandomRecommender(object):
             "SKLDecisionTree": {"alg_id": "50000000000000010", "alg_type": "1"},
             "TFGPRMV2": {"alg_id": "10000000000000001", "alg_type": "10"},
             "XGBoost": {"alg_id": "10000000000000002", "alg_type": "1"},
-            "IsolationForest": {"alg_id": "10000000000000003", "alg_type": "1"},
-            "LightGBM": {"alg_id": "10000000000000004", "alg_type": "1"}
+            "IsolationForest": {"alg_id": "50000000000000015", "alg_type": "1"},
+            "LightGBM": {"alg_id": "10000000000000003", "alg_type": "1"}
         }
 
     def get_uuid(self):
@@ -78,6 +80,7 @@ class RandomRecommender(object):
     def recommend(self, dprs_dict, job_id, dataset_format):
         result = list()
         alg_pool: list = self.ALGORITHM_POOL[int(dataset_format)][self.project_purpose_cd]
+        Common.LOGGER.getLogger().info(f"tag list : {self.project_tag_list}")
 
         is_specific_case = None
         for tag in self.project_tag_list:
@@ -87,17 +90,23 @@ class RandomRecommender(object):
             elif "packet" in tag.lower():
                 is_specific_case = self.SPECIFIC_ALGORITHM_POOL["packet"]
                 break
-            elif "metadata" in tag.lower():
-                is_specific_case = self.SPECIFIC_ALGORITHM_POOL["metadata"]
+            elif "meta" in tag.lower():
+                is_specific_case = self.SPECIFIC_ALGORITHM_POOL["meta"]
                 break
 
+        Common.LOGGER.getLogger().info(f"is_specific_case : {is_specific_case}")
         for idx in range(random.randint(Constants.RCMD_MIN_COUNT, Constants.RCMD_MAX_COUNT)):
-            if len(is_specific_case) is not None:
+            if is_specific_case is not None:
                 alg_cls = is_specific_case
+                is_specific_case = None
             else:
                 alg_cls = random.choice(alg_pool)
-            alg_id = self.algorithm_info.get(alg_cls).get("alg_id")
-            alg_type = self.algorithm_info.get(alg_cls).get("alg_type")
+            try:
+                alg_id = self.algorithm_info.get(alg_cls).get("alg_id")
+                alg_type = self.algorithm_info.get(alg_cls).get("alg_type")
+            except Exception as e:
+                Common.LOGGER.getLogger().error(f"alg_cls: {alg_cls}")
+                raise e
 
             result.append(
                 {"alg_cls": alg_cls, "alg_id": alg_id, "project_id": job_id,
