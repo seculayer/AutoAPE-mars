@@ -33,6 +33,17 @@ class RandomRecommender(object):
             },
             {
                 "1": ["KCNN", "KDNN"]
+            },
+            {
+                "1": [
+                    "KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
+                    "SKLGaussianNB", "SKLDecisionTree",  # "SKLSVC",
+                    "XGBoost", "IsolationForest", "LightGBM"
+                    # "SKLBernoulliNB", "SKLLinearSVC", "SKLKNeighbors", "SKLMLP"
+                ],
+                "10": [
+                    "TFGPRMV2"
+                ]
             }
         ]
         self.SPECIFIC_ALGORITHM_POOL = {
