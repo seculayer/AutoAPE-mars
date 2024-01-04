@@ -19,7 +19,7 @@ class MLAlgRecommender(KubePodSafetyTermThread, metaclass=Singleton):
             self.logger.error(e, exc_info=True)
 
     def run(self) -> None:
-
+        # while True:
         while not self.mars_manager.get_terminate():
             try:
                 self.mars_manager.recommend()

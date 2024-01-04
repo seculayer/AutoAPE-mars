@@ -24,7 +24,7 @@ class RandomRecommender(object):
                 "1": [
                     "KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
                     "SKLGaussianNB", "SKLDecisionTree",  # "SKLSVC",
-                    "XGBoost", "IsolationForest", "LightGBM"
+                    "XGBoost", "SKLIsolationForest", "LightGBM"
                     # "SKLBernoulliNB", "SKLLinearSVC", "SKLKNeighbors", "SKLMLP"
                 ],
                 "10": [
@@ -38,7 +38,7 @@ class RandomRecommender(object):
                 "1": [
                     "KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
                     "SKLGaussianNB", "SKLDecisionTree",  # "SKLSVC",
-                    "XGBoost", "IsolationForest", "LightGBM"
+                    "XGBoost", "SKLIsolationForest", "LightGBM"
                     # "SKLBernoulliNB", "SKLLinearSVC", "SKLKNeighbors", "SKLMLP"
                 ],
                 "10": [
@@ -48,7 +48,7 @@ class RandomRecommender(object):
         ]
         self.SPECIFIC_ALGORITHM_POOL = {
             "dga": "XGBoost",
-            "packet": "IsolationForest",
+            "packet": "SKLIsolationForest",
             "meta": "LightGBM"
         }
         self.algorithm_info = self.get_algorithm_info()
@@ -80,7 +80,7 @@ class RandomRecommender(object):
             "SKLDecisionTree": {"alg_id": "50000000000000010", "alg_type": "1"},
             "TFGPRMV2": {"alg_id": "10000000000000001", "alg_type": "10"},
             "XGBoost": {"alg_id": "10000000000000002", "alg_type": "1"},
-            "IsolationForest": {"alg_id": "50000000000000015", "alg_type": "1"},
+            "SKLIsolationForest": {"alg_id": "50000000000000015", "alg_type": "1"},
             "LightGBM": {"alg_id": "10000000000000003", "alg_type": "1"}
         }
 
@@ -91,6 +91,18 @@ class RandomRecommender(object):
     def recommend(self, dprs_dict, job_id, dataset_format):
         result = list()
         alg_pool: list = self.ALGORITHM_POOL[int(dataset_format)][self.project_purpose_cd]
+        # Scikit Learn 일 경우 multi class 지원 x
+        if dprs_dict["data_analysis_json"][0]["statistic"].__contains__("unique"):
+            label_kind_cnt = dprs_dict["data_analysis_json"][0]["statistic"]["unique"]["unique_count"]
+
+            if label_kind_cnt > 2:
+                remove_val_list = list()
+                for alg in alg_pool:
+                    if alg[:3] == "SKL":
+                        remove_val_list.append(alg)
+                for alg in remove_val_list:
+                    alg_pool.remove(alg)
+
         Common.LOGGER.getLogger().info(f"tag list : {self.project_tag_list}")
 
         is_specific_case = None
