@@ -3,13 +3,14 @@
 # e-mail : jin.kim@seculayer.com
 # Powered by Seculayer © 2021 AI Service Model Team, R&D Center.
 
-import requests as rq
 import json
 from typing import Union
 
+import requests as rq
+from pycmmn.sftp.SFTPClientManager import SFTPClientManager
+
 from mars.common.Common import Common
 from mars.common.Constants import Constants
-from pycmmn.sftp.SFTPClientManager import SFTPClientManager
 from mars.recommender.RandomRecommender import RandomRecommender
 
 
@@ -29,7 +30,9 @@ class MARSManager(object):
     def initialize(self):
         self.mrms_sftp_manager = SFTPClientManager(
             "{}:{}".format(Constants.MRMS_SVC, Constants.MRMS_SFTP_PORT),
-            Constants.MRMS_USER, Constants.MRMS_PASSWD, self.logger
+            Constants.MRMS_USER,
+            Constants.MRMS_PASSWD,
+            self.logger,
         )
 
     def load_job_info(self, filename):
@@ -37,24 +40,26 @@ class MARSManager(object):
 
     def recommend(self):
         filename = f"{Constants.DIR_JOB_PATH}/{self.job_id}/DPRS_{self.job_id}_{self.current}.info"
+        project_tag_list = rq.get(f"{self.rest_root_url}/mrms/get_project_tag?project_id={self.job_id}").text.split(",")
         if self.mrms_sftp_manager.is_exist(filename):
             job_info = self.load_job_info(filename)
             results = list()
             for dprs_data in job_info:
                 data_analysis_id: str = dprs_data.get("data_analysis_id")
                 dataset_format = self.get_dataset_format(data_analysis_id)
-                results += RandomRecommender(project_purpose_cd=dprs_data.get("project_purpose_cd", None)).recommend(dprs_data, self.job_id, dataset_format)
+                results += RandomRecommender(
+                    project_purpose_cd=dprs_data.get("project_purpose_cd", None), project_tag_list=project_tag_list
+                ).recommend(dprs_data, self.job_id, dataset_format)
                 self.logger.debug(f"project_id: {self.job_id}, recommended: {results[-1]}")
 
             response = rq.post(f"{self.rest_root_url}/mrms/insert_alg_anls_info", json=results)
             self.logger.info(f"insert alg anls info: {response.status_code} {response.reason} {response.text}")
 
-            f = self.mrms_sftp_manager.get_client().open(
-                f"{Constants.DIR_JOB_PATH}/{self.job_id}/MARS_{self.job_id}_{self.current}.info",
-                "w"
-            )
+            tmp_filename = f"{Constants.DIR_JOB_PATH}/{self.job_id}/MARS_{self.job_id}_{self.current}"
+            f = self.mrms_sftp_manager.get_client().open(f"{tmp_filename}.tmp", "w")
             f.write(json.dumps(results, indent=2))
             f.close()
+            self.mrms_sftp_manager.rename(f"{tmp_filename}.tmp", f"{tmp_filename}.info")
             self.current += 1
 
     def get_dataset_format(self, data_analysis_id) -> str:
@@ -80,5 +85,5 @@ class MARSManager(object):
             self.mrms_sftp_manager.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     dam = MARSManager("ID", "0")
