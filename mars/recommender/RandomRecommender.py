@@ -32,7 +32,7 @@ class RandomRecommender(object):
                 ]
             },
             {
-                "1": ["KCNN", "KDNN"]
+                "1": ["KCNN", "KDNN", "KTMSFeedBackKNN"]
             },
             {
                 "1": [
