@@ -24,7 +24,7 @@ class RandomRecommender(object):
                 "1": [
                     "KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
                     "SKLGaussianNB", "SKLDecisionTree",  # "SKLSVC",
-                    "XGBoost", "SKLIsolationForest", "LightGBM"
+                    "XGBoost", "SKLIsolationForest", "LightGBM", "KTMSFeedBackKNN"
                     # "SKLBernoulliNB", "SKLLinearSVC", "SKLKNeighbors", "SKLMLP"
                 ],
                 "10": [
@@ -32,13 +32,13 @@ class RandomRecommender(object):
                 ]
             },
             {
-                "1": ["KCNN", "KDNN"]
+                "1": ["KCNN", "KDNN", "KTMSFeedBackKNN"]
             },
             {
                 "1": [
                     "KDNN", "KCNN", "SKLExtraTrees", "SKLRandomForest",
                     "SKLGaussianNB", "SKLDecisionTree",  # "SKLSVC",
-                    "XGBoost", "SKLIsolationForest", "LightGBM"
+                    "XGBoost", "SKLIsolationForest", "LightGBM", "KTMSFeedBackKNN"
                     # "SKLBernoulliNB", "SKLLinearSVC", "SKLKNeighbors", "SKLMLP"
                 ],
                 "10": [
@@ -69,6 +69,7 @@ class RandomRecommender(object):
         return {
             "KDNN": {"alg_id": "20000000000000001", "alg_type": "1"},
             "KCNN": {"alg_id": "20000000000000002", "alg_type": "1"},
+            "KTMSFeedBackKNN": {"alg_id": "20000000000000008", "alg_type": "1"},
             "SKLExtraTrees": {"alg_id": "50000000000000001", "alg_type": "1"},
             "SKLRandomForest": {"alg_id": "50000000000000002", "alg_type": "1"},
             "SKLBernoulliNB": {"alg_id": "50000000000000003", "alg_type": "1"},
